@@ -3,19 +3,28 @@ import clingo
 
 
 class Sudoku:
-    def __init__(self, board: dict[(int, int), int]):
+    def __init__(self, board: dict[(Tuple[int, int], int)]):
         self.board = board
         self.sudoku = board
 
-        def __str__(self) -> str:
-            rows = []
-            for i in range(1, 10):
-                row = []
-                for j in range(1, 10):
-                    val = self.sudoku.get((i, j), 0)
-                    row.append(str(val) if val != 0 else ".")
-                rows.append(" ".join(row))
-            return "\n".join(rows)
+    def __str__(self) -> str:
+        s = ""
+        for row in range(1, 10):
+            for col in range(1, 10):
+                s += str(self.board.get((row, col)))
+
+                if col < 9:
+                    if col % 3 == 0:
+                        s += "  "
+                    else:
+                        s += " "
+
+            s += "\n"
+
+            if row % 3 == 0 and row < 9:
+                s += "\n"
+            
+        return s
 
     @classmethod
     def from_model(cls, model: clingo.solving.Model) -> "Sudoku":
