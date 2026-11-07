@@ -1,4 +1,5 @@
 import sys
+from xml.parsers.expat import model
 import clingo
 
 
@@ -14,6 +15,10 @@ class SudokuApp(clingo.Application):
         control.ground([("base", [])])
         control.solve()
 
+    def print_model(self, model, printer):
+        for atom in sorted(model.symbols(shown=True), key=str):
+            print(atom, end=" ")
+        print()
 
 if __name__ == "__main__":
     app = SudokuApp()
